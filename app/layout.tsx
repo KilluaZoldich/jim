@@ -1,7 +1,8 @@
 import type React from "react"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Crimson_Text, Work_Sans } from "next/font/google"
 import "./globals.css"
+import PWAInstallPrompt from "@/src/components/pwa-install-prompt"
 
 const crimsonText = Crimson_Text({
   subsets: ["latin"],
@@ -18,9 +19,37 @@ const workSans = Work_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "FitFlow - Your Personal Trainer",
-  description: "Simple and beautiful fitness app for iPhone",
-  generator: "v0.dev",
+  title: "Fitness Tracker App",
+  description: "A modern fitness tracking application for workout management and progress tracking",
+  generator: "Next.js",
+  manifest: "/jim/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "FitnessApp",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Fitness Tracker App",
+    title: "Fitness Tracker App",
+    description: "A modern fitness tracking application for workout management and progress tracking",
+  },
+  twitter: {
+    card: "summary",
+    title: "Fitness Tracker App",
+    description: "A modern fitness tracking application for workout management and progress tracking",
+  },
+}
+
+export const viewport: Viewport = {
+  themeColor: "#3B82F6",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default function RootLayout({
@@ -29,8 +58,35 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${crimsonText.variable} ${workSans.variable}`}>
-      <body className="font-sans antialiased bg-cream text-charcoal min-h-screen">{children}</body>
+    <html lang="it" className={`${crimsonText.variable} ${workSans.variable}`}>
+      <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="FitnessApp" />
+        <link rel="apple-touch-icon" href="/jim/icon-192.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/jim/favicon.ico" />
+      </head>
+      <body className="font-sans antialiased bg-cream text-charcoal min-h-screen">
+        {children}
+        <PWAInstallPrompt />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/jim/sw.js')
+                    .then(function(registration) {
+                      console.log('SW registered: ', registration);
+                    })
+                    .catch(function(registrationError) {
+                      console.log('SW registration failed: ', registrationError);
+                    });
+                });
+              }
+            `,
+          }}
+        />
+      </body>
     </html>
   )
 }

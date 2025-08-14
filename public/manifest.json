@@ -1,0 +1,16 @@
+{
+  "name": "Fitness Tracker App",
+  "short_name": "FitnessApp",
+  "description": "A modern fitness tracking application",
+  "start_url": "/jim/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3B82F6",
+  "icons": [
+    {
+      "src": "/jim/logo.svg",
+      "sizes": "100x100",
+      "type": "image/svg+xml"
+    }
+  ]
+}

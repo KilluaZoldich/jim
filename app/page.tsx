@@ -8,6 +8,8 @@ import WorkoutScreen from "@/components/WorkoutScreen"
 import ProgressScreen from "@/components/ProgressScreen"
 import SettingsScreen from "@/components/SettingsScreen"
 import HomeScreen from "@/components/HomeScreen"
+import { MobileNavigation, useMobileNavigation } from "@/components/ui/mobile-navigation"
+import { useDeviceType } from "@/components/ui/use-mobile"
 
 type Screen = "home" | "programs" | "workout" | "progress" | "settings"
 
@@ -170,7 +172,8 @@ const DEFAULT_ACHIEVEMENTS: Achievement[] = [
 ]
 
 export default function FitnessApp() {
-  const [currentScreen, setCurrentScreen] = useState<Screen>("home")
+  const { currentScreen, navigate } = useMobileNavigation()
+  const { isMobile, isIPhone } = useDeviceType()
   const [isLoading, setIsLoading] = useState(true)
   const [programs, setPrograms] = useState<Program[]>([])
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null)
@@ -350,8 +353,8 @@ export default function FitnessApp() {
       isPaused: false,
     }
     setWorkoutSession(newSession)
-    setCurrentScreen("workout")
-  }, [selectedProgram])
+    navigate("workout")
+  }, [selectedProgram, navigate])
 
   const completeWorkout = useCallback(
     (session: WorkoutSession) => {
@@ -517,7 +520,7 @@ export default function FitnessApp() {
       case "home":
         return (
           <HomeScreen
-            onNavigate={setCurrentScreen}
+            onNavigate={navigate}
             selectedProgram={selectedProgram}
             onStartWorkout={startWorkout}
             userStats={userStats}
@@ -527,7 +530,7 @@ export default function FitnessApp() {
       case "programs":
         return (
           <ProgramsScreen
-            onNavigate={setCurrentScreen}
+            onNavigate={navigate}
             programs={programs}
             setPrograms={setPrograms}
             selectedProgram={selectedProgram}
@@ -537,7 +540,7 @@ export default function FitnessApp() {
       case "workout":
         return (
           <WorkoutScreen
-            onNavigate={setCurrentScreen}
+            onNavigate={navigate}
             selectedProgram={selectedProgram}
             workoutSession={workoutSession}
             setWorkoutSession={setWorkoutSession}
@@ -548,19 +551,19 @@ export default function FitnessApp() {
       case "progress":
         return (
           <ProgressScreen
-            onNavigate={setCurrentScreen}
+            onNavigate={navigate}
             completedWorkouts={completedWorkouts}
             exerciseProgress={exerciseProgress}
           />
         )
       case "settings":
         return (
-          <SettingsScreen onNavigate={setCurrentScreen} programs={programs} completedWorkouts={completedWorkouts} />
+          <SettingsScreen onNavigate={navigate} programs={programs} completedWorkouts={completedWorkouts} />
         )
       default:
         return (
           <HomeScreen
-            onNavigate={setCurrentScreen}
+            onNavigate={navigate}
             selectedProgram={selectedProgram}
             onStartWorkout={startWorkout}
             userStats={userStats}
@@ -598,7 +601,7 @@ export default function FitnessApp() {
         </div>
       )}
 
-      {userPreferences.enableQuickActions && currentScreen === "home" && (
+      {userPreferences.enableQuickActions && currentScreen === "home" && !isMobile && (
         <div className="fixed bottom-24 right-4 z-40">
           <div
             className={`transition-all duration-300 ${showQuickActions ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
@@ -656,7 +659,7 @@ export default function FitnessApp() {
       <div className="pb-20">
         {currentScreen === "home" && (
           <HomeScreen
-            onNavigate={setCurrentScreen}
+            onNavigate={navigate}
             selectedProgram={selectedProgram}
             onStartWorkout={startWorkout}
             userStats={userStats}
@@ -666,38 +669,51 @@ export default function FitnessApp() {
         {currentScreen !== "home" && <main className="flex-1 p-6 max-w-md mx-auto pb-24">{renderScreen()}</main>}
       </div>
 
-      <nav className="bg-gradient-to-r from-forest via-forest-light to-forest text-cream p-4 fixed bottom-0 left-0 right-0 z-50 border-t border-gold/20 shadow-2xl">
-        <div className="flex justify-around max-w-md mx-auto">
-          {[
-            { screen: "home", icon: "home", label: "Home" },
-            { screen: "programs", icon: "plus", label: "Programmi" },
-            { screen: "progress", icon: "chart", label: "Progressi" },
-            { screen: "settings", icon: "settings", label: "Impostazioni" },
-          ].map(({ screen, icon, label }) => (
-            <button
-              key={screen}
-              onClick={() => setCurrentScreen(screen as Screen)}
-              className={`flex flex-col items-center gap-1 p-3 rounded-xl transition-all duration-300 ${
-                currentScreen === screen
-                  ? "bg-gradient-to-br from-gold to-gold/80 text-forest shadow-lg scale-110"
-                  : "text-cream/80 hover:text-cream hover:bg-white/10"
-              }`}
-            >
-              <div className="w-6 h-6 flex items-center justify-center">
-                {icon === "home" && (
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-                  </svg>
-                )}
-                {icon === "plus" && <Plus className="w-5 h-5" />}
-                {icon === "chart" && <BarChart3 className="w-5 h-5" />}
-                {icon === "settings" && <Settings className="w-5 h-5" />}
-              </div>
-              <span className="text-xs font-medium">{label}</span>
-            </button>
-          ))}
-        </div>
-      </nav>
+      {/* Mobile Navigation - Only show on mobile devices */}
+      {isMobile && (
+        <MobileNavigation
+          currentScreen={currentScreen}
+          onNavigate={navigate}
+          onStartWorkout={startWorkout}
+          hasSelectedProgram={!!selectedProgram}
+        />
+      )}
+
+      {/* Desktop Navigation - Only show on desktop */}
+      {!isMobile && (
+        <nav className="bg-gradient-to-r from-forest via-forest-light to-forest text-cream p-4 fixed bottom-0 left-0 right-0 z-50 border-t border-gold/20 shadow-2xl">
+          <div className="flex justify-around max-w-md mx-auto">
+            {[
+              { screen: "home", icon: "home", label: "Home" },
+              { screen: "programs", icon: "plus", label: "Programmi" },
+              { screen: "progress", icon: "chart", label: "Progressi" },
+              { screen: "settings", icon: "settings", label: "Impostazioni" },
+            ].map(({ screen, icon, label }) => (
+              <button
+                key={screen}
+                onClick={() => navigate(screen as Screen)}
+                className={`flex flex-col items-center gap-1 p-3 rounded-xl transition-all duration-300 ${
+                  currentScreen === screen
+                    ? "bg-gradient-to-br from-gold to-gold/80 text-forest shadow-lg scale-110"
+                    : "text-cream/80 hover:text-cream hover:bg-white/10"
+                }`}
+              >
+                <div className="w-6 h-6 flex items-center justify-center">
+                  {icon === "home" && (
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    </svg>
+                  )}
+                  {icon === "plus" && <Plus className="w-5 h-5" />}
+                  {icon === "chart" && <BarChart3 className="w-5 h-5" />}
+                  {icon === "settings" && <Settings className="w-5 h-5" />}
+                </div>
+                <span className="text-xs font-medium">{label}</span>
+              </button>
+            ))}
+          </div>
+        </nav>
+      )}
     </div>
   )
 }

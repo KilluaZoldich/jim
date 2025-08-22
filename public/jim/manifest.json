@@ -1,0 +1,72 @@
+{
+  "name": "FitFlow - Fitness Tracker",
+  "short_name": "FitFlow",
+  "description": "App moderna per il tracking degli allenamenti e monitoraggio progressi fitness",
+  "start_url": "/jim/",
+  "display": "standalone",
+  "background_color": "#f9f5e6",
+  "theme_color": "#2e4a2d",
+  "orientation": "portrait-primary",
+  "scope": "/jim/",
+  "lang": "it",
+  "categories": ["fitness", "health", "lifestyle"],
+  "icons": [
+    {
+      "src": "/jim/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/jim/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/jim/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Inizia Allenamento",
+      "short_name": "Start",
+      "description": "Avvia rapidamente un allenamento",
+      "url": "/jim/?screen=workout",
+      "icons": [
+        {
+          "src": "/jim/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Visualizza Progressi",
+      "short_name": "Progressi",
+      "description": "Controlla i tuoi progressi fitness",
+      "url": "/jim/?screen=progress",
+      "icons": [
+        {
+          "src": "/jim/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/jim/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/jim/screenshot-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+}

@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next"
 import { Crimson_Text, Work_Sans } from "next/font/google"
 import "./globals.css"
 import PWAInstallPrompt from "@/src/components/pwa-install-prompt"
+import { IOSOptimizations } from "@/components/ui/ios-optimizations"
 
 const crimsonText = Crimson_Text({
   subsets: ["latin"],
@@ -50,6 +51,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  viewportFit: "cover",
 }
 
 export default function RootLayout({
@@ -61,13 +63,19 @@ export default function RootLayout({
     <html lang="it" className={`${crimsonText.variable} ${workSans.variable}`}>
       <head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="FitnessApp" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="msapplication-tap-highlight" content="no" />
         <link rel="apple-touch-icon" href="/jim/icon-192.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/jim/favicon.ico" />
+        <link rel="manifest" href="/jim/manifest.json" />
       </head>
       <body className="font-sans antialiased bg-cream text-charcoal min-h-screen">
-        {children}
+        <IOSOptimizations>
+          {children}
+        </IOSOptimizations>
         <PWAInstallPrompt />
         <script
           dangerouslySetInnerHTML={{

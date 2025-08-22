@@ -656,7 +656,7 @@ export default function FitnessApp() {
       </header>
 
       {/* Main Content */}
-      <div className="pb-20">
+      <div className="pb-16">
         {currentScreen === "home" && (
           <HomeScreen
             onNavigate={navigate}
@@ -666,7 +666,7 @@ export default function FitnessApp() {
             achievements={achievements}
           />
         )}
-        {currentScreen !== "home" && <main className="flex-1 p-6 max-w-md mx-auto pb-24">{renderScreen()}</main>}
+        {currentScreen !== "home" && <main className="flex-1 p-4 max-w-md mx-auto pb-20">{renderScreen()}</main>}
       </div>
 
       {/* Mobile Navigation - Only show on mobile devices */}

@@ -50,27 +50,27 @@ export function MobileNavigation({
         isVisible ? 'translate-y-0' : 'translate-y-full'
       }`}
       style={{
-        paddingBottom: isIPhone ? `calc(0.5rem + ${safeAreaBottom})` : '0.5rem'
+        paddingBottom: isIPhone ? `calc(0.75rem + ${safeAreaBottom})` : '0.75rem'
       }}
     >
       {/* Background blur effect for iPhone */}
-      <div className="absolute inset-0 bg-white/80 backdrop-blur-xl border-t border-gray-200/50" />
+      <div className="absolute inset-0 bg-white/90 backdrop-blur-xl border-t border-gray-200/30" />
       
       <div className="relative px-4">
-        {/* Quick Start Workout Button */}
+        {/* Quick Start Workout Button - Solo se c'è un programma selezionato */}
         {hasSelectedProgram && (
           <div className="mb-3 flex justify-center">
             <button
               onClick={onStartWorkout}
-              className="bg-gradient-to-r from-forest to-forest-light text-white px-6 py-3 rounded-full shadow-lg font-semibold text-sm touch-feedback iphone-button flex items-center gap-2"
+              className="bg-gradient-to-r from-forest to-forest-light text-white px-5 py-2.5 rounded-full shadow-md font-semibold text-sm hover:shadow-lg transition-all duration-200 active:scale-95 flex items-center gap-2"
             >
-              <Play className="w-4 h-4" />
+              <Play className="w-3.5 h-3.5" />
               Inizia Allenamento
             </button>
           </div>
         )}
 
-        {/* Navigation Items */}
+        {/* Navigation Items - Layout più compatto */}
         <div className="flex justify-around items-center">
           {navigationItems.map((item) => {
             const Icon = item.icon
@@ -80,10 +80,10 @@ export function MobileNavigation({
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
-                className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-200 touch-feedback iphone-button ${
+                className={`flex flex-col items-center gap-1.5 p-2.5 rounded-xl transition-all duration-200 ${
                   isActive 
-                    ? 'bg-gradient-to-r ' + item.color + ' text-white shadow-lg scale-110' 
-                    : 'text-charcoal/70 hover:text-charcoal hover:scale-105'
+                    ? 'bg-gradient-to-r ' + item.color + ' text-white shadow-md scale-105' 
+                    : 'text-charcoal/70 hover:text-charcoal hover:bg-gray-50/50'
                 }`}
               >
                 <Icon className={`w-5 h-5 ${isActive ? 'text-white' : ''}`} />

@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Plus, Play, BarChart3, Settings, Dumbbell, X, Zap, RotateCcw } from "lucide-react"
+import IconWrapper from "@/components/ui/icon-wrapper"
 import { useState, useEffect, useCallback } from "react"
 import ProgramsScreen from "@/components/ProgramsScreen"
 import WorkoutScreen from "@/components/WorkoutScreen"
@@ -592,7 +593,7 @@ export default function FitnessApp() {
                     </div>
                   </div>
                   <Button size="sm" variant="ghost" onClick={() => setNewAchievements([])} className="ml-auto">
-                    <X className="w-4 h-4" />
+                    <IconWrapper icon={X} className="w-4 h-4" fallback="✕" />
                   </Button>
                 </div>
               </CardContent>
@@ -613,7 +614,7 @@ export default function FitnessApp() {
                   className="bg-forest hover:bg-forest-light text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
                   onClick={startWorkout}
                 >
-                  <Play className="w-4 h-4 mr-1" />
+                  <IconWrapper icon={Play} className="w-4 h-4 mr-1" fallback="▶" />
                   Start
                 </Button>
               )}
@@ -622,8 +623,8 @@ export default function FitnessApp() {
                   size="sm"
                   className="bg-gold hover:bg-gold/80 text-forest rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
                   onClick={quickRestartLastWorkout}
-                >
-                  <RotateCcw className="w-4 h-4 mr-1" />
+                  >
+                  <IconWrapper icon={RotateCcw} className="w-4 h-4 mr-1" fallback="🔄" />
                   Repeat
                 </Button>
               )}
@@ -633,7 +634,7 @@ export default function FitnessApp() {
             className="w-14 h-14 rounded-full bg-gradient-to-r from-forest to-forest-light hover:from-forest-light hover:to-forest text-white shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 active:scale-95"
             onClick={() => setShowQuickActions(!showQuickActions)}
           >
-            <Zap className="w-6 h-6" />
+            <IconWrapper icon={Zap} className="w-6 h-6" fallback="⚡" />
           </Button>
         </div>
       )}
@@ -649,7 +650,7 @@ export default function FitnessApp() {
               </div>
             )}
             <div className="w-10 h-10 bg-gradient-to-br from-gold to-gold/80 rounded-full flex items-center justify-center shadow-lg">
-              <Dumbbell className="w-5 h-5 text-forest" />
+              <IconWrapper icon={Dumbbell} className="w-5 h-5 text-forest" fallback="🏋️" />
             </div>
           </div>
         </div>
@@ -704,9 +705,9 @@ export default function FitnessApp() {
                       <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
                     </svg>
                   )}
-                  {icon === "plus" && <Plus className="w-5 h-5" />}
-                  {icon === "chart" && <BarChart3 className="w-5 h-5" />}
-                  {icon === "settings" && <Settings className="w-5 h-5" />}
+                  {icon === "plus" && <IconWrapper icon={Plus} className="w-5 h-5" fallback="+" />}
+                  {icon === "chart" && <IconWrapper icon={BarChart3} className="w-5 h-5" fallback="📊" />}
+                  {icon === "settings" && <IconWrapper icon={Settings} className="w-5 h-5" fallback="⚙️" />}
                 </div>
                 <span className="text-xs font-medium">{label}</span>
               </button>

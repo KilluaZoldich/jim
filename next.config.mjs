@@ -14,6 +14,55 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
+  // Configurazioni per gestire meglio i problemi di rendering
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
+    // Disabilita alcuni controlli che possono causare problemi con React 19
+    disableOptimizedLoading: true,
+  },
+  webpack: (config, { dev, isServer }) => {
+    // Gestione migliore degli errori di rendering
+    if (!isServer && dev) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      }
+    }
+    
+    // Configurazione per gestire meglio le icone SVG
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    })
+    
+    // Ottimizzazioni per React 19
+    if (!isServer) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          ...config.optimization.splitChunks,
+          cacheGroups: {
+            ...config.optimization.splitChunks.cacheGroups,
+            icons: {
+              test: /[\\/]node_modules[\\/]lucide-react[\\/]/,
+              name: 'icons',
+              chunks: 'all',
+              priority: 10,
+            },
+          },
+        },
+      }
+    }
+    
+    return config
+  },
+  // Configurazione per gestire meglio gli errori di rendering
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2,
+  },
 }
 
 export default nextConfig;

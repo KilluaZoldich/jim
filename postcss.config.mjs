@@ -2,6 +2,9 @@
 const config = {
   plugins: {
     '@tailwindcss/postcss': {},
+    // Plugin per gestire meglio i problemi di rendering
+    'autoprefixer': {},
+    'postcss-flexbugs-fixes': {},
   },
 }
 

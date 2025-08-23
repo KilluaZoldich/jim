@@ -7,6 +7,13 @@ module.exports = {
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
   ],
+  // Configurazione per gestire meglio i problemi di rendering
+  corePlugins: {
+    preflight: true,
+  },
+  experimental: {
+    optimizeUniversalDefaults: true,
+  },
   theme: {
     container: {
       center: true,
